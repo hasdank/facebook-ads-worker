@@ -1,4 +1,4 @@
-# ads_facebook
+# facebook_ads_worker
 Facebook Ads Worker using Facebook Marketing and Insights APIs
 
 ## Introduction
