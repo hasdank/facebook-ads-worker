@@ -1,16 +1,17 @@
 # ads_facebook
-Facebook Ads using FB Marketing and Insights APIs
-
-***Work In Progress***
+Facebook Ads Worker using Facebook Marketing and Insights APIs
 
 ## Introduction
 
 The following effort will be based on the work:
 + https://github.com/jeff00seattle/facebook-api-scripts
 
-This code will be built off these personally developed repositories:
+This code was built off these personally developed python projects:
 + https://github.com/jeff00seattle/logging-fortified
 + https://github.com/jeff00seattle/requests-fortified
 + https://github.com/jeff00seattle/requests-worker
 
-Should be completed by end of day Monday 7th May 2018
+Which are also in the process of being hosted on pypi.org respectively:
++ https://pypi.org/project/logging-fortified/
++ https://pypi.org/project/requests-fortified/
++ https://pypi.org/project/requests-worker/
