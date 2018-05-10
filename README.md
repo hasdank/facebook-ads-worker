@@ -1,5 +1,10 @@
 # facebook_ads_worker
+
+***Work In Progress***
+
 Facebook Ads Worker using Facebook Marketing and Insights APIs
+
+Code is complete, but documentation is required.
 
 ## Introduction
 
