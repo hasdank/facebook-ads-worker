@@ -6,7 +6,10 @@
 
 .PHONY: clean version build dist local-dev yapf pyflakes pylint
 
-PACKAGE := AlgoRewards
+PACKAGE := FacebookAdsWorker
+PACKAGE_NAME := facebook_ads
+
+TMP_RESULT_GZIP_FILE="tmp/$(PACKAGE_NAME).json.gz"
 
 PYTHON3 := $(shell which python3)
 PIP3    := $(shell which pip3)
@@ -103,6 +106,30 @@ local-run: install
 	@echo local-run
 	@echo "======================================================"
 	@$(PYTHON3) worker.py || (echo "local-run failed $$?"; exit 1)
+
+install-tools:
+	@echo "======================================================"
+	@echo install-tools
+	@echo "======================================================"
+	$(PIP3) install --upgrade pip
+	$(PIP3) install --upgrade -r requirements-tools.txt
+
+results: install-tools
+	@echo "======================================================"
+	@echo results $(TMP_RESULT_GZIP_FILE)
+	@echo "======================================================"
+	@test -f $(TMP_RESULT_GZIP_FILE) || (echo "File $(TMP_RESULT_GZIP_FILE) missing!" ; exit 1)
+	@ls -al tmp/*.gz
+	@mkdir -p tmp/reports
+	@rm -fR tmp/reports/*.csv
+	@rm -fR tmp/reports/*.html
+	@rm -fR tmp/reports/*.tex
+	@rm -fR tmp/reports/*.gz
+	@$(PYTHON3) parser/results_parser.py --data $(TMP_RESULT_GZIP_FILE) --csv --html
+	@ls -al tmp/reports/*.csv 2>/dev/null
+	@ls -al tmp/reports/*.html 2>/dev/null
+	@ls -al tmp/reports/*.tex 2>/dev/null
+	@ls -al tmp/reports/*.gz 2>/dev/null
 
 list:
 	cat Makefile | grep "^[a-z]" | awk '{print $$1}' | sed "s/://g" | sort
