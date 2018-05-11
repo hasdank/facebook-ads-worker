@@ -131,16 +131,40 @@ $ make results
 ======================================================
 results tmp/facebook_ads.json.gz
 ======================================================
--rw-r--r--  1 jefft  staff  657535 Feb  1 12:50 tmp/facebook_ads.json.gz
-'Results Data: tmp/facebook_ads.json.gz, num lines: 25009'
-'Results CSV: tmp/facebook_ads.results.csv'
-'HTML: tmp/facebook_ads.results.html'
-'Summary CSV: tmp/facebook_ads.summary.csv'
-'HTML: tmp/facebook_ads.summary.html'
--rw-r--r--  1 jefft  staff  8770359 Feb  1 12:51 tmp/facebook_ads.results.csv
--rw-r--r--  1 jefft  staff   414874 Feb  1 12:52 tmp/facebook_ads.summary.csv
--rw-r--r--  1 jefft  staff  36487381 Feb  1 12:52 tmp/facebook_ads.results.html
--rw-r--r--  1 jefft  staff   1100187 Feb  1 12:52 tmp/facebook_ads.summary.html
+-rw-r--r--  1 jefft  staff  182868 May 10 17:26 tmp/facebook_ads.json.gz
+'Results Data: tmp/facebook_ads.json.gz, num lines: 11532'
+'Results CSV: tmp/reports/facebook_ads.normalized.csv'
+'Results HTML: tmp/reports/facebook_ads.normalized.html'
+'Results CSV: tmp/reports/facebook_ads.summary.csv'
+'Results HTML: tmp/reports/facebook_ads.summary.html'
+'Results CSV: tmp/reports/facebook_ads.summary.daily.csv'
+'Results HTML: tmp/reports/facebook_ads.summary.daily.html'
+'Results CSV: tmp/reports/facebook_ads.summary.daily.ios.csv'
+'Results HTML: tmp/reports/facebook_ads.summary.daily.ios.html'
+'Results CSV: tmp/reports/facebook_ads.summary.daily.android.csv'
+'Results HTML: tmp/reports/facebook_ads.summary.daily.android.html'
+'Results HTML: tmp/reports/facebook_ads.summary.campaigns.html'
+'Results CSV: tmp/reports/facebook_ads.summary.campaigns.csv'
+'Results HTML: tmp/reports/facebook_ads.summary.ad_accounts.html'
+'Results CSV: tmp/reports/facebook_ads.summary.ad_accounts.csv'
+'Results HTML: tmp/reports/facebook_ads.summary.hourly.html'
+'Results CSV: tmp/reports/facebook_ads.summary.hourly.csv'
+-rw-r--r--  1 jefft  staff  6081764 May 10 17:26 tmp/reports/facebook_ads.normalized.csv
+-rw-r--r--  1 jefft  staff   314015 May 10 17:27 tmp/reports/facebook_ads.summary.ad_accounts.csv
+-rw-r--r--  1 jefft  staff     9384 May 10 17:27 tmp/reports/facebook_ads.summary.campaigns.csv
+-rw-r--r--  1 jefft  staff   452653 May 10 17:27 tmp/reports/facebook_ads.summary.csv
+-rw-r--r--  1 jefft  staff      817 May 10 17:27 tmp/reports/facebook_ads.summary.daily.android.csv
+-rw-r--r--  1 jefft  staff      817 May 10 17:27 tmp/reports/facebook_ads.summary.daily.csv
+-rw-r--r--  1 jefft  staff      817 May 10 17:27 tmp/reports/facebook_ads.summary.daily.ios.csv
+-rw-r--r--  1 jefft  staff     3999 May 10 17:27 tmp/reports/facebook_ads.summary.hourly.csv
+-rw-r--r--  1 jefft  staff  12348392 May 10 17:27 tmp/reports/facebook_ads.normalized.html
+-rw-r--r--  1 jefft  staff    636064 May 10 17:27 tmp/reports/facebook_ads.summary.ad_accounts.html
+-rw-r--r--  1 jefft  staff     29722 May 10 17:27 tmp/reports/facebook_ads.summary.campaigns.html
+-rw-r--r--  1 jefft  staff      2452 May 10 17:27 tmp/reports/facebook_ads.summary.daily.android.html
+-rw-r--r--  1 jefft  staff      2452 May 10 17:27 tmp/reports/facebook_ads.summary.daily.html
+-rw-r--r--  1 jefft  staff      2452 May 10 17:27 tmp/reports/facebook_ads.summary.daily.ios.html
+-rw-r--r--  1 jefft  staff     13781 May 10 17:27 tmp/reports/facebook_ads.summary.hourly.html
+-rw-r--r--  1 jefft  staff    884466 May 10 17:27 tmp/reports/facebook_ads.summary.html
 ```
 
 #### `tmp/[COLLECTOR].results.csv`
