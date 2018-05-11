@@ -8,6 +8,8 @@ Code is complete, but documentation is required.
 
 ## Introduction
 
+***Work In Progress***
+
 The following effort will be based on the work:
 + https://github.com/jeff00seattle/facebook-api-scripts
 
@@ -21,44 +23,13 @@ Which are also in the process of being hosted on pypi.org respectively:
 + https://pypi.org/project/requests-fortified/
 + https://pypi.org/project/requests-worker/
 
+## Configure Request
 
-| field                                 |
-|---------------------------------------|
-| date                                  |
-| hour                                  |
-| timezone                              |
-| granularity                           |
-| campaign_type                         |
-| campaign_id                           |
-| campaign_name                         |
-| adset_id                              |
-| adset_name                            |
-| ad_id                                 |
-| ad_name                               |
-| adgroup_name                          |
-| received_clicks_gross                 |
-| received_clicks_unique                |
-| received_conversions                  |
-| received_events_other                 |
-| received_events_other_1d_view         |
-| received_events_other_28d_click       |
-| received_events_other_7d_click        |
-| received_impressions_complete         |
-| received_impressions_gross            |
-| received_impressions_unique           |
-| received_installs                     |
-| received_installs_1d_view             |
-| received_installs_28d_click           |
-| received_installs_7d_click            |
-| received_revenue                      |
-| received_revenue_1d_view              |
-| received_revenue_28d_click            |
-| received_revenue_7d_click             |
+## Run Worker
 
+## Results Parsing
 
-# Results Parsing
-
-## Reports
+### Reports
 
 ```bash
 tmp
@@ -75,9 +46,9 @@ tmp
     └── facebook_ads.summary.sites.html
 ```
 
-## Python Script `results_parser.py`
+### Python Script `results_parser.py`
 
-### Install Requirements
+#### Install Requirements
 
 ```bash
 $ brew install cairo pango gdk-pixbuf libffi
@@ -87,46 +58,9 @@ $ python3 -m install jinja2
 $ python3 -m install numpy
 ```
 
-### Run
+#### Run
 
 ```bash
-$ cd cost/facebook_ads
-$ make results
-======================================================
-results-pandas tmp/facebook_ads.json.gz
-======================================================
--rw-r--r--  1 jefft  staff  14193 May 09 17:12 tmp/facebook_ads.json.gz
-'Results: tmp/facebook_ads.json.gz'
-'Results CSV: tmp/facebook_ads.json.results.csv'
-'Summary CSV: tmp/facebook_ads.json.summary.csv'
-'TEX: tmp/facebook_ads.json.summary.tex'
-'PDF: tmp/facebook_ads.json.summary.pdf'
--rw-r--r--  1 jefft  staff  208093 May 09 13:52 tmp/facebook_ads.json.results.csv
--rw-r--r--  1 jefft  staff   12163 May 09 13:52 tmp/facebook_ads.json.summary.csv
--rw-r--r--  1 jefft  staff  34732 May 09 13:52 tmp/facebook_ads.json.summary.tex
--rw-r--r--  1 jefft  staff  106162 May 09 13:52 tmp/facebook_ads.json.summary.pdf
-```
-
-## Python Script `results_parser.py`
-
-### Run
-
-```bash
-$ cd cost/facebook_ads
-$ make local-run-no-install
-```
-
-```json
-{"asctime": "2018-05-09 17:12:21 -0800", "levelname": "INFO", "name": "tune_mv_integration", "version": "1.23.7", "message": "Printed: File: Finished", "upload_file_exists": true, "upload_file_path": "/Users/jefft/github/TuneLab/mv-integrations/cost/facebook_ads/tmp/facebook_ads.json.gz", "upload_file_size": "13.86 KB", "upload_row_count": 657, "upload_row_count_printed": 657}
-```
-
-```bash
-$ ls -al tmp
-total 32
-drwxr-xr-x   3 jefft  staff    102 May 09 17:12 .
-drwxr-xr-x  23 jefft  staff    782 May 09 17:12 ..
--rw-r--r--   1 jefft  staff  14193 May 09 17:12 facebook_ads.json.gz
-
 $ make results
 ======================================================
 results tmp/facebook_ads.json.gz
@@ -167,7 +101,7 @@ results tmp/facebook_ads.json.gz
 -rw-r--r--  1 jefft  staff    884466 May 10 17:27 tmp/reports/facebook_ads.summary.html
 ```
 
-#### `tmp/[COLLECTOR].results.csv`
+#### `tmp/reports/facebook_ads.normalized.csv`
 
 Contents of this file is a mapping from raw JSON response to CSV.
 
@@ -193,19 +127,20 @@ All of the following columns are the actual values mapped from values returned f
 * received_revenue_7d_click
 
 ```csv
-client_id,partner_id,vendor_id,vendor_account_id,date,hour,timezone,granularity,platform_ref,platform_type,site_ref_id,site_ref_type,campaign_type,campaign_id,campaign_name,adset_id,adset_name,ad_id,ad_name,my_campaign_name,agency_id,received_impressions_gross,received_impressions_unique,received_impressions_complete,received_clicks_gross,received_clicks_unique,received_conversions,received_installs,received_installs_7d_click,received_installs_28d_click,received_installs_1d_view,received_revenue,received_revenue_7d_click,received_revenue_28d_click,received_revenue_1d_view,cost,cost_currency,received_events_other,received_events_other_7d_click,received_events_other_28d_click,received_events_other_1d_view
-1,7,1650,1498663353579121,"2018-01-06",14,"America/Los_Angeles","hour","com.hellochatty","android",2385,"tmc","acquisition",23842716148040455,"FAR Hello Chatty App installs - Brent Testing",23842716148100455,"US - 18+",23842716148220455,"Default Name - App installs - Image 1","",3,256,0,0,8,0,0,3,3,3,0,0.0,0.0,0.0,0.0,2.19,"USD",122,76,122,
-1,7,1650,1498663353579121,"2018-01-06",14,"America/Los_Angeles","hour","com.hellochatty","android",2385,"tmc","acquisition",23842716148040455,"FAR Hello Chatty App installs - Brent Testing",23842716148100455,"US - 18+",23842716148380455,"Default Name - App installs - Image 2","",3,128,0,0,1,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.79,"USD",,,,
-1,7,1650,1498663353579121,"2018-01-06",15,"America/Los_Angeles","hour","com.hellochatty","android",2385,"tmc","acquisition",23842716148040455,"FAR Hello Chatty App installs - Brent Testing",23842716148100455,"US - 18+",23842716148220455,"Default Name - App installs - Image 1","",3,248,0,0,4,0,0,3,3,3,0,0.0,0.0,0.0,0.0,2.78,"USD",31,31,31,
-1,7,1650,1498663353579121,"2018-01-06",15,"America/Los_Angeles","hour","com.hellochatty","android",2385,"tmc","acquisition",23842716148040455,"FAR Hello Chatty App installs - Brent Testing",23842716148100455,"US - 18+",23842716148380455,"Default Name - App installs - Image 2","",3,60,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.24,"USD",,,,
+date,hour,timezone,granularity,cost_currency,ad_name,ad_id,adset_name,adset_id,campaign_name,campaign_id,campaign_type,campaign_platform,impression_device,campaign_objective,cost,received_clicks_gross,received_clicks_unique,received_conversions,received_events_checkout_initiated,received_events_checkout_initiated_1d_view,received_events_checkout_initiated_28d_click,received_events_checkout_initiated_7d_click,received_events_other,received_events_other_1d_view,received_events_other_28d_click,received_events_other_7d_click,received_events_purchase,received_events_purchase_1d_view,received_events_purchase_28d_click,received_events_purchase_7d_click,received_events_registration,received_events_registration_1d_view,received_events_registration_28d_click,received_events_registration_7d_click,received_impressions_complete,received_impressions_gross,received_impressions_unique,received_installs,received_installs_1d_click,received_installs_1d_view,received_installs_28d_click,received_installs_7d_click,received_revenue,received_revenue_1d_click,received_revenue_1d_view,received_revenue_28d_click,received_revenue_7d_click,revenue_currency
+2018-05-06,0,America/Los_Angeles,hour,USD,"Post: ""Next week the tavern will be decked out in its...""",6091490082247,"Post: ""Next week the tavern will be decked out in its...""",6091490082047,"Post: ""Next week the tavern will be decked out in its...""",6091490080447,,,,POST_ENGAGEMENT,0.46,2,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,167,1,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00,USD
+2018-05-06,0,America/Los_Angeles,hour,USD,"Post: ""Looking for a new deck to play? Try out Charged...""",6091656546247,"Post: ""Looking for a new deck to play? Try out Charged...""",6091656546047,"Post: ""Looking for a new deck to play? Try out Charged...""",6091656544647,,,,POST_ENGAGEMENT,0.16,1,1,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,68,1,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00,USD
+2018-05-06,0,America/Los_Angeles,hour,USD,RESIZE_rexxar1200x628,23842735695970684,iOS | US | iPhone | 1% LAL,23842735694610684,FB | HS | Display | Evergreen | Mobile | NA | iOS,23842735694550684,acquisition,,,APP_INSTALLS,0.08,0,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,6,6,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00,USD
+2018-05-06,0,America/Los_Angeles,hour,USD,RESIZE_jaina1200x628,23842735695060684,iOS | US | iPhone | 1% LAL,23842735694610684,FB | HS | Display | Evergreen | Mobile | NA | iOS,23842735694550684,acquisition,,,APP_INSTALLS,0.45,0,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,29,29,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00,USD
+2018-05-06,0,America/Los_Angeles,hour,USD,HS_SEPT_Resizing1200x628_Spellbender,23842735735450684,iOS | US | Android Phone | 1% LAL,23842735698820684,FB | HS | Display | Evergreen | Mobile | NA | Android,23842735698750684,acquisition,,,APP_INSTALLS,2.10,0,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,89,89,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00,USD
 ```
 
-| client_id | partner_id | vendor_id | vendor_account_id | date         | hour | timezone              | granularity | platform_ref      | platform_type | site_ref_id | site_ref_type | campaign_type | campaign_id  | campaign_name                               | adset_id   | adset_name | ad_id        | ad_name                                | my_campaign_name | agency_id | received_impressions_gross | received_impressions_unique | received_impressions_complete | received_clicks_gross | received_clicks_unique | received_conversions | received_installs | received_installs_7d_click | received_installs_28d_click | received_installs_1d_view | received_revenue | received_revenue_7d_click | received_revenue_28d_click | received_revenue_1d_view | cost  | cost_currency | received_events_other | received_events_other_7d_click | received_events_other_28d_click | received_events_other_1d_view |
-|-----------|------------|-----------|-------------------|--------------|------|-----------------------|-------------|-------------------|---------------|-------------|---------------|-------------------|-------------------|-------------------------------------------------|-------------------|------------------|-------------------|--------------------------------------------|------------------|-----------|----------------------------|-----------------------------|-------------------------------|-----------------------|------------------------|----------------------|-------------------|----------------------------|-----------------------------|---------------------------|------------------|---------------------------|----------------------------|--------------------------|-------|---------------|-----------------------|--------------------------------|---------------------------------|-------------------------------|
-| 1         | 7          | 1650      | 1498663353579121  | "2018-01-06" | 14   | "America/Los_Angeles" | "hour"      | "com.hellochatty" | "android"     | 2385        | "tmc"         | "acquisition"     | 23842716148040455 | "FAR Hello Chatty App installs - Brent Testing" | 23842716148100455 | "US - 18+"       | 23842716148220455 | "Default Name - App installs - Image 1","" | 3                | 256       | 0                          | 0                           | 8                             | 0                     | 0                      | 3                    | 3                 | 3                          | 0                           | 0.0                       | 0.0              | 0.0                       | 0.0                        | 2.19                     | "USD" | 122           | 76                    | 122                            |                                 |                               |
-| 1         | 7          | 1650      | 1498663353579121  | "2018-01-06" | 14   | "America/Los_Angeles" | "hour"      | "com.hellochatty" | "android"     | 2385        | "tmc"         | "acquisition"     | 23842716148040455 | "FAR Hello Chatty App installs - Brent Testing" | 23842716148100455 | "US - 18+"       | 23842716148380455 | "Default Name - App installs - Image 2","" | 3                | 128       | 0                          | 0                           | 1                             | 0                     | 0                      | 0                    | 0                 | 0                          | 0                           | 0.0                       | 0.0              | 0.0                       | 0.0                        | 0.79                     | "USD" |               |                       |                                |                                 |                               |
-| 1         | 7          | 1650      | 1498663353579121  | "2018-01-06" | 15   | "America/Los_Angeles" | "hour"      | "com.hellochatty" | "android"     | 2385        | "tmc"         | "acquisition"     | 23842716148040455 | "FAR Hello Chatty App installs - Brent Testing" | 23842716148100455 | "US - 18+"       | 23842716148220455 | "Default Name - App installs - Image 1","" | 3                | 248       | 0                          | 0                           | 4                             | 0                     | 0                      | 3                    | 3                 | 3                          | 0                           | 0.0                       | 0.0              | 0.0                       | 0.0                        | 2.78                     | "USD" | 31            | 31                    | 31                             |                                 |                               |
-| 1         | 7          | 1650      | 1498663353579121  | "2018-01-06" | 15   | "America/Los_Angeles" | "hour"      | "com.hellochatty" | "android"     | 2385        | "tmc"         | "acquisition"     | 23842716148040455 | "FAR Hello Chatty App installs - Brent Testing" | 23842716148100455 | "US - 18+"       | 23842716148380455 | "Default Name - App installs - Image 2","" | 3                | 60        | 0                          | 0                           | 0                             | 0                     | 0                      | 0                    | 0                 | 0                          | 0                           | 0.0                       | 0.0              | 0.0                       | 0.0                        | 0.24                     | "USD" |               |                       |                                |                                 |                               |
+||date||hour||timezone||granularity||cost_currency||ad_name||ad_id||adset_name||adset_id||campaign_name||campaign_id||campaign_type||campaign_platform||impression_device||campaign_objective||cost||received_clicks_gross||received_clicks_unique||received_conversions||received_events_checkout_initiated||received_events_checkout_initiated_1d_view||received_events_checkout_initiated_28d_click||received_events_checkout_initiated_7d_click||received_events_other||received_events_other_1d_view||received_events_other_28d_click||received_events_other_7d_click||received_events_purchase||received_events_purchase_1d_view||received_events_purchase_28d_click||received_events_purchase_7d_click||received_events_registration||received_events_registration_1d_view||received_events_registration_28d_click||received_events_registration_7d_click||received_impressions_complete||received_impressions_gross||received_impressions_unique||received_installs||received_installs_1d_click||received_installs_1d_view||received_installs_28d_click||received_installs_7d_click||received_revenue||received_revenue_1d_click||received_revenue_1d_view||received_revenue_28d_click||received_revenue_7d_click||revenue_currency||
+||2018-05-06|0|America/Los_Angeles|hour|USD|"Post: ""Next week the tavern will be decked out in its..."""|6091490082247|"Post: ""Next week the tavern will be decked out in its..."""|6091490082047|"Post: ""Next week the tavern will be decked out in its..."""|6091490080447| | | |POST_ENGAGEMENT|0.46|2|0|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|167|1|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|USD|
+||2018-05-06|0|America/Los_Angeles|hour|USD|"Post: ""Looking for a new deck to play? Try out Charged..."""|6091656546247|"Post: ""Looking for a new deck to play? Try out Charged..."""|6091656546047|"Post: ""Looking for a new deck to play? Try out Charged..."""|6091656544647| | | |POST_ENGAGEMENT|0.16|1|1|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|68|1|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|USD|
+||2018-05-06|0|America/Los_Angeles|hour|USD|RESIZE_rexxar1200x628|23842735695970684|iOS|US|iPhone|1% LAL|23842735694610684|FB|HS|Display|Evergreen|Mobile|NA|iOS|23842735694550684|acquisition| | |APP_INSTALLS|0.08|0|0|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|6|6|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|USD|
+||2018-05-06|0|America/Los_Angeles|hour|USD|RESIZE_jaina1200x628|23842735695060684|iOS|US|iPhone|1% LAL|23842735694610684|FB|HS|Display|Evergreen|Mobile|NA|iOS|23842735694550684|acquisition| | |APP_INSTALLS|0.45|0|0|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|29|29|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|USD|
+||2018-05-06|0|America/Los_Angeles|hour|USD|HS_SEPT_Resizing1200x628_Spellbender|23842735735450684|iOS|US|Android Phone|1% LAL|23842735698820684|FB|HS|Display|Evergreen|Mobile|NA|Android|23842735698750684|acquisition| | |APP_INSTALLS|2.10|0|0|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|89|89|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|USD|
 
 
 #### `tmp/[COLLECTOR].summary.csv`
@@ -216,40 +151,20 @@ Grouped by
 * date
 * ad_id
 
-All of the following columns are the sum
-* cost
-* received_clicks_gross
-* received_clicks_unique
-* received_conversions
-* received_events_other
-* received_events_other_1d_view
-* received_events_other_28d_click
-* received_events_other_7d_click
-* received_impressions_complete
-* received_impressions_gross
-* received_impressions_unique
-* received_installs
-* received_installs_1d_view
-* received_installs_28d_click
-* received_installs_7d_click
-* received_revenue
-* received_revenue_1d_view
-* received_revenue_28d_click
-* received_revenue_7d_click
 
 ```csv
-client_id,vendor_id,partner_id,agency_id,vendor_account_id,date,timezone,site_ref_id,site_ref_type,campaign_type,campaign_name,campaign_id,ad_name,ad_id,adset_id,adset_name,platform_ref,platform_type,cost_currency,my_campaign_name,cost,received_clicks_gross,received_clicks_unique,received_conversions,received_events_other,received_events_other_1d_view,received_events_other_28d_click,received_events_other_7d_click,received_impressions_complete,received_impressions_gross,received_impressions_unique,received_installs,received_installs_1d_view,received_installs_28d_click,received_installs_7d_click,received_revenue,received_revenue_1d_view,received_revenue_28d_click,received_revenue_7d_click
-1,1650,7,3,1498663353579121,"2018-01-06","America/Los_Angeles",2385,"tmc","acquisition","FAR Hello Chatty App installs - Brent Testing","23842716148040455","Default Name - App installs - Image 1","23842716148220455","23842716148100455","US - 18+","com.hellochatty","android","USD","",18.119999999999997,49,0,0,514,,514,422,0,1924,0,16,0,16,16,0.0,0.0,0.0,0.0
-1,1650,7,3,1498663353579121,"2018-01-06","America/Los_Angeles",2385,"tmc","acquisition","FAR Hello Chatty App installs - Brent Testing","23842716148040455","Default Name - App installs - Image 2","23842716148380455","23842716148100455","US - 18+","com.hellochatty","android","USD","",3.47,13,0,0,32,,32,32,0,441,0,6,0,6,6,0.0,0.0,0.0,0.0
-1,1650,7,3,1498663353579121,"2018-01-07","America/Los_Angeles",2385,"tmc","acquisition","FAR Hello Chatty App installs - Brent Testing","23842716148040455","Default Name - App installs - Image 1","23842716148220455","23842716148100455","US - 18+","com.hellochatty","android","USD","",20.63,36,0,0,248,,248,248,0,1601,0,11,0,11,11,0.0,0.0,0.0,0.0
-1,1650,7,3,1498663353579121,"2018-01-07","America/Los_Angeles",2385,"tmc","acquisition","FAR Hello Chatty App installs - Brent Testing","23842716148040455","Default Name - App installs - Image 2","23842716148380455","23842716148100455","US - 18+","com.hellochatty","android","USD","",30.000000000000004,95,0,0,1627,,1627,1312,0,3155,0,50,1,49,49,0.0,0.0,0.0,0.0
-1,1650,7,3,1498663353579121,"2018-01-08","America/Los_Angeles",2385,"tmc","acquisition","FAR Hello Chatty App installs - Brent Testing","23842716148040455","Default Name - App installs - Image 1","23842716148220455","23842716148100455","US - 18+","com.hellochatty","android","USD","",1.06,2,0,0,,,,,0,77,0,0,0,0,0,0.0,0.0,0.0,0.0
+date,timezone,cost_currency,ad_name,ad_id,adset_name,adset_id,campaign_name,campaign_id,campaign_type,campaign_platform,impression_device,cost,received_clicks_gross,received_clicks_unique,received_conversions,received_events_checkout_initiated,received_events_checkout_initiated_1d_view,received_events_checkout_initiated_28d_click,received_events_checkout_initiated_7d_click,received_events_other,received_events_other_1d_view,received_events_other_28d_click,received_events_other_7d_click,received_events_purchase,received_events_purchase_1d_view,received_events_purchase_28d_click,received_events_purchase_7d_click,received_events_registration,received_events_registration_1d_view,received_events_registration_28d_click,received_events_registration_7d_click,received_impressions_complete,received_impressions_gross,received_impressions_unique,received_installs,received_installs_1d_click,received_installs_1d_view,received_installs_28d_click,received_installs_7d_click,received_revenue,received_revenue_1d_click,received_revenue_1d_view,received_revenue_28d_click,received_revenue_7d_click
+2018-05-06,America/Los_Angeles,USD,810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_Adult Swim_CPP_Newsfeed_CPM_1x1 Click & Imp_Facebook_Facebook_March Ana Static Copy 13,23842741609950072,Newsfeed | Adult Swim | US | UA,23842741603960072,FB | OW | Display | Evergreen | Desktop | NA,23842599438570072,engagement,,,86.05,22,20,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,7021,6722,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00
+2018-05-06,America/Los_Angeles,USD,810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_Cartoons_CPP_Newsfeed_CPM_1x1 Click & Imp_Facebook_Facebook_March Ana Static Copy 13,23842741624180072,Newsfeed | Cartoon | US | UA,23842741624170072,FB | OW | Display | Evergreen | Desktop | NA,23842599438570072,engagement,,,8.87,4,4,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,684,673,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00
+2018-05-06,America/Los_Angeles,USD,810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_FPS_CPP_Newsfeed_CPM_1x1 Click & Imp_Facebook_Facebook_Widowmaker2 Sept Static Copy 20,23842743029460072,Newsfeed | FPS | US | UA,23842743029380072,FB | OW | Display | Evergreen | Desktop | NA,23842599438570072,engagement,,,22.99,13,12,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,1313,1271,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00
+2018-05-06,America/Los_Angeles,USD,810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_Mobile Games_CPP_Newsfeed_CPM_1x1 Click & Imp_Facebook_Facebook_March Hanzo Static Copy 1,23842743034740072,Newsfeed | Mobile Games | US | UA,23842743034720072,FB | OW | Display | Evergreen | Desktop | NA,23842599438570072,engagement,,,0.00,0,0,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,1,1,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00
+2018-05-06,America/Los_Angeles,USD,810026_OW_US_Promo_Banner_Desktop_P_1200x628_SS_3PD_BHV_Adult Swim_CPP_Newsfeed_dCPM_1x1 Click & Imp_Facebook_Facebook_OW-UA-JAN18-BASTION.COPY.Join.35.Million-0-Stat-1200X628-0,23842764324990072,Newsfeed | Adult Swim | US | UA,23842741603960072,FB | OW | Display | Evergreen | Desktop | NA,23842599438570072,engagement,,,7.28,1,1,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0,480,464,0,0,0,0,0,0.00,0.00,0.00,0.00,0.00
+
 ```
 
-| client_id | vendor_id | partner_id | agency_id | vendor_account_id | date         | timezone              | site_ref_id | site_ref_type | campaign_type | campaign_name                               | campaign_id    | ad_name                             | ad_id          | adset_id     | adset_name | platform_ref      | platform_type | cost_currency | my_campaign_name   | cost | received_clicks_gross | received_clicks_unique | received_conversions | received_events_other | received_events_other_1d_view | received_events_other_28d_click | received_events_other_7d_click | received_impressions_complete | received_impressions_gross | received_impressions_unique | received_installs | received_installs_1d_view | received_installs_28d_click | received_installs_7d_click | received_revenue | received_revenue_1d_view | received_revenue_28d_click | received_revenue_7d_click |
-|-----------|-----------|------------|-----------|-------------------|--------------|-----------------------|-------------|---------------|-------------------|-------------------------------------------------|---------------------|-----------------------------------------|---------------------|---------------------|------------------|-------------------|---------------|---------------|--------------------|------|-----------------------|------------------------|----------------------|-----------------------|-------------------------------|---------------------------------|--------------------------------|-------------------------------|----------------------------|-----------------------------|-------------------|---------------------------|-----------------------------|----------------------------|------------------|--------------------------|----------------------------|---------------------------|
-| 1         | 1650      | 7          | 3         | 1498663353579121  | "2018-01-06" | "America/Los_Angeles" | 2385        | "tmc"         | "acquisition"     | "FAR Hello Chatty App installs - Brent Testing" | "23842716148040455" | "Default Name - App installs - Image 1" | "23842716148220455" | "23842716148100455" | "US - 18+"       | "com.hellochatty" | "android"     | "USD",""      | 18.119999999999997 | 49   | 0                     | 0                      | 514                  |                       | 514                           | 422                             | 0                              | 1924                          | 0                          | 16                          | 0                 | 16                        | 16                          | 0.0                        | 0.0              | 0.0                      | 0.0                        |                           |
-| 1         | 1650      | 7          | 3         | 1498663353579121  | "2018-01-06" | "America/Los_Angeles" | 2385        | "tmc"         | "acquisition"     | "FAR Hello Chatty App installs - Brent Testing" | "23842716148040455" | "Default Name - App installs - Image 2" | "23842716148380455" | "23842716148100455" | "US - 18+"       | "com.hellochatty" | "android"     | "USD",""      | 3.47               | 13   | 0                     | 0                      | 32                   |                       | 32                            | 32                              | 0                              | 441                           | 0                          | 6                           | 0                 | 6                         | 6                           | 0.0                        | 0.0              | 0.0                      | 0.0                        |                           |
-| 1         | 1650      | 7          | 3         | 1498663353579121  | "2018-01-07" | "America/Los_Angeles" | 2385        | "tmc"         | "acquisition"     | "FAR Hello Chatty App installs - Brent Testing" | "23842716148040455" | "Default Name - App installs - Image 1" | "23842716148220455" | "23842716148100455" | "US - 18+"       | "com.hellochatty" | "android"     | "USD",""      | 20.63              | 36   | 0                     | 0                      | 248                  |                       | 248                           | 248                             | 0                              | 1601                          | 0                          | 11                          | 0                 | 11                        | 11                          | 0.0                        | 0.0              | 0.0                      | 0.0                        |                           |
-| 1         | 1650      | 7          | 3         | 1498663353579121  | "2018-01-07" | "America/Los_Angeles" | 2385        | "tmc"         | "acquisition"     | "FAR Hello Chatty App installs - Brent Testing" | "23842716148040455" | "Default Name - App installs - Image 2" | "23842716148380455" | "23842716148100455" | "US - 18+"       | "com.hellochatty" | "android"     | "USD",""      | 30.000000000000004 | 95   | 0                     | 0                      | 1627                 |                       | 1627                          | 1312                            | 0                              | 3155                          | 0                          | 50                          | 1                 | 49                        | 49                          | 0.0                        | 0.0              | 0.0                      | 0.0                        |                           |
-| 1         | 1650      | 7          | 3         | 1498663353579121  | "2018-01-08" | "America/Los_Angeles" | 2385        | "tmc"         | "acquisition"     | "FAR Hello Chatty App installs - Brent Testing" | "23842716148040455" | "Default Name - App installs - Image 1" | "23842716148220455" | "23842716148100455" | "US - 18+"       | "com.hellochatty" | "android"     | "USD",""      | 1.06               | 2    | 0                     | 0                      |                      |                       |                               |                                 | 0                              | 77                            | 0                          | 0                           | 0                 | 0                         | 0                           | 0.0                        | 0.0              | 0.0                      | 0.0                        |                           |
+||date||timezone||cost_currency||ad_name||ad_id||adset_name||adset_id||campaign_name||campaign_id||campaign_type||campaign_platform||impression_device||cost||received_clicks_gross||received_clicks_unique||received_conversions||received_events_checkout_initiated||received_events_checkout_initiated_1d_view||received_events_checkout_initiated_28d_click||received_events_checkout_initiated_7d_click||received_events_other||received_events_other_1d_view||received_events_other_28d_click||received_events_other_7d_click||received_events_purchase||received_events_purchase_1d_view||received_events_purchase_28d_click||received_events_purchase_7d_click||received_events_registration||received_events_registration_1d_view||received_events_registration_28d_click||received_events_registration_7d_click||received_impressions_complete||received_impressions_gross||received_impressions_unique||received_installs||received_installs_1d_click||received_installs_1d_view||received_installs_28d_click||received_installs_7d_click||received_revenue||received_revenue_1d_click||received_revenue_1d_view||received_revenue_28d_click||received_revenue_7d_click||
+||2018-05-06|America/Los_Angeles|USD|810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_Adult Swim_CPP_Newsfeed_CPM_1x1 Click &amp; Imp_Facebook_Facebook_March Ana Static Copy 13|23842741609950072|Newsfeed|Adult Swim|US|UA|23842741603960072|FB|OW|Display|Evergreen|Desktop|NA|23842599438570072|engagement| | |86.05|22|20|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|7021|6722|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|
+||2018-05-06|America/Los_Angeles|USD|810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_Cartoons_CPP_Newsfeed_CPM_1x1 Click &amp; Imp_Facebook_Facebook_March Ana Static Copy 13|23842741624180072|Newsfeed|Cartoon|US|UA|23842741624170072|FB|OW|Display|Evergreen|Desktop|NA|23842599438570072|engagement| | |8.87|4|4|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|684|673|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|
+||2018-05-06|America/Los_Angeles|USD|810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_FPS_CPP_Newsfeed_CPM_1x1 Click &amp; Imp_Facebook_Facebook_Widowmaker2 Sept Static Copy 20|23842743029460072|Newsfeed|FPS|US|UA|23842743029380072|FB|OW|Display|Evergreen|Desktop|NA|23842599438570072|engagement| | |22.99|13|12|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|1313|1271|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|
+||2018-05-06|America/Los_Angeles|USD|810026_OW_US_EG_Social_Desktop_P_1200x628_SS_3PD_BHV_Mobile Games_CPP_Newsfeed_CPM_1x1 Click &amp; Imp_Facebook_Facebook_March Hanzo Static Copy 1|23842743034740072|Newsfeed|Mobile Games|US|UA|23842743034720072|FB|OW|Display|Evergreen|Desktop|NA|23842599438570072|engagement| | |0.00|0|0|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|1|1|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|
+||2018-05-06|America/Los_Angeles|USD|810026_OW_US_Promo_Banner_Desktop_P_1200x628_SS_3PD_BHV_Adult Swim_CPP_Newsfeed_dCPM_1x1 Click &amp; Imp_Facebook_Facebook_OW-UA-JAN18-BASTION.COPY.Join.35.Million-0-Stat-1200X628-0|23842764324990072|Newsfeed|Adult Swim|US|UA|23842741603960072|FB|OW|Display|Evergreen|Desktop|NA|23842599438570072|engagement| | |7.28|1|1|0|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0.00|0|480|464|0|0|0|0|0|0.00|0.00|0.00|0.00|0.00|
