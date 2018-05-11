@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#  @copyright 2018 TUNE, Inc. (http://www.tune.com)
+#  @copyright 2018, Jeff Tanner, jeff00seattle
+#  @namespace facebook_ads_worker
 
 from .utils import (
     parseGzipNDJSON,

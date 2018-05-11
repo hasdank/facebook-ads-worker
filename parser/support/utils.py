@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Results Parser: Utils
+#  @copyright 2018, Jeff Tanner, jeff00seattle
+#  @namespace facebook_ads_worker
 
 import codecs
 import gzip
