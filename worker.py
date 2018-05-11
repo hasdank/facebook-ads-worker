@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
+#  @copyright 2018, Jeff Tanner, jeff00seattle
 
 import sys
 import os
@@ -68,59 +68,46 @@ from requests_fortified.exceptions import (
     RequestsFortifiedAuthenticationError,
     RequestsFortifiedClientError,)
 
-class WorkerRequest(object):
-
-    def __init__(self, access_token):
-        self.__access_token = access_token
-
-    @property
-    def access_token(self):
-        return self.__access_token
-
-    @access_token.setter
-    def request_url(self, value):
-        self.__access_token = value
-
 __FACEBOOK_GRAPH_API_VERSION = 'v2.12'
 FACEBOOK_GRAPH_API_URL = f'https://graph.facebook.com/{__FACEBOOK_GRAPH_API_VERSION}'
 
 DOWNLOAD_DIR = os.path.dirname(os.path.realpath(__file__)) + '/tmp'
-DOWNLOAD_FILE_NAME = "facebook_ads"
+UPLOAD_FILE_NAME = "facebook_ads"
 
 python_check_version(__python_required_version__)
 
 _FACEBOOK_INSIGHTS_FIELDS = [
-        "date_start",
-        "date_stop",
+    "date_start",
+    "date_stop",
 
-        "account_id",
-        "account_name",
-        "account_currency",
+    "account_id",
+    "account_name",
+    "account_currency",
 
-        "campaign_id",
-        "campaign_name",
+    "campaign_id",
+    "campaign_name",
 
-        "ad_id",
-        "ad_name",
+    "ad_id",
+    "ad_name",
 
-        "adset_id",
-        "adset_name",
+    "adset_id",
+    "adset_name",
 
-        "objective",
+    "objective",
 
-        "actions",
-        "action_values",
-        "unique_actions",
+    "actions",
+    "action_values",
+    "unique_actions",
 
-        "spend",
-        "clicks",
-        "unique_clicks",
-        "unique_ctr",
+    "spend",
+    "clicks",
+    "unique_clicks",
+    "unique_ctr",
 
-        "impressions",
-        "reach",  # Replaced unique_impressions
+    "impressions",
+    "reach",  # Replaced unique_impressions
 
-        "video_p100_watched_actions"
+    "video_p100_watched_actions"
 ]
 
 _FACEBOOK_INSIGHTS_PARAMS = {
@@ -132,7 +119,8 @@ _FACEBOOK_INSIGHTS_PARAMS = {
     # when you query the API with action_report_time=impression, you will see a conversion on Jan 1st.
     # When you query the API with action_report_time=conversion, you will see a conversion on Jan 2nd.
     "default_summary": "false",
-    "breakdowns": [],
+    # "breakdowns": ["publisher_platform", "impression_device", "device_platform"],
+    "breakdowns": ["impression_device"],
     "action_breakdowns": ["action_type","action_target_id"],
     "level": "ad"}
 
@@ -162,7 +150,7 @@ class FacebookAdsWorker(RequestsWorkerBase):
     _WORKER_VERSION = "0.0.2"
 
     _CACHE_NAME = 'facebook_ads'
-    DOWNLOAS_FILE_NAME = 'facebook_ads'
+    UPLOAD_FILE_NAME = 'facebook_ads'
 
     _GRANULARITY = _GRANULARITY_HOUR
 
@@ -208,6 +196,8 @@ class FacebookAdsWorker(RequestsWorkerBase):
         config_job=None,
         config_request_credentials=None
     ):
+        upload_response = (None, 0, 0)
+
         self.logger.info('Validate Client Credentials')
         self.validate_client_credentials(required=['access_token'], credentials=config_request_credentials)
 
@@ -218,7 +208,9 @@ class FacebookAdsWorker(RequestsWorkerBase):
         self.datetime_end = datetime_end
 
         try:
-            return self.work_process()
+            create_download_dir(download_dir=DOWNLOAD_DIR)
+
+            upload_response = self.work_process()
 
         except Exception as ex:
             self.logger.error(
@@ -227,16 +219,12 @@ class FacebookAdsWorker(RequestsWorkerBase):
                        'error_details': get_exception_message(ex)})
             raise
 
-        return True
+        return upload_response
 
     def work_process(self):
-        download_response = None
-
         try:
-            create_download_dir(download_dir=DOWNLOAD_DIR)
-
             # Opens a file for appending.
-            upload_json_file_name = self.DOWNLOAS_FILE_NAME + ".json.gz"
+            upload_json_file_name = self.UPLOAD_FILE_NAME + ".json.gz"
 
             tmp_json_file_path = \
                 "{tmp_directory}/{tmp_json_file_name}".format(
@@ -340,8 +328,6 @@ class FacebookAdsWorker(RequestsWorkerBase):
             raise
 
         return upload_response
-
-        return download_response
 
     def fb_ad_accounts_get(self, access_token):
         """Facebook Ads: Get Ad Accounts
@@ -1078,12 +1064,11 @@ class FacebookAdsWorker(RequestsWorkerBase):
 
         return reports
 
-
     def fb_get_reports_mapping(
         self,
         account_id,
         ad_account,
-        campaigns,
+        fb_campaigns,
         main_report_id,
         fb_reports,
         granularity
@@ -1114,18 +1099,18 @@ class FacebookAdsWorker(RequestsWorkerBase):
                     fb_report_row_mapped = self.fb_get_report_mapping(
                         account_id,
                         ad_account,
-                        campaigns,
+                        fb_campaigns,
                         report_segment,
                         granularity
                     )
 
                     date = fb_report_row_mapped.get("date")
                     vendor_account_id = fb_report_row_mapped.get("vendor_account_id")
-                    sub_campaign_ref = fb_report_row_mapped.get("sub_campaign_ref")
-                    sub_ad_ref = fb_report_row_mapped.get("sub_ad_ref")
-                    sub_adgroup_ref = fb_report_row_mapped.get("sub_adgroup_ref")
-                    sub_campaign_type = fb_report_row_mapped.get("sub_campaign_type")
-                    key = f"{date}:{vendor_account_id}:{sub_campaign_ref}:{sub_ad_ref}:{sub_adgroup_ref}:{sub_campaign_type}"
+                    campaign_id = fb_report_row_mapped.get("campaign_id")
+                    ad_id = fb_report_row_mapped.get("ad_id")
+                    adset_id = fb_report_row_mapped.get("adset_id")
+                    campaign_type = fb_report_row_mapped.get("campaign_type")
+                    key = f"{date}:{vendor_account_id}:{campaign_id}:{ad_id}:{adset_id}:{campaign_type}"
                     hash_key = create_hash_key(key)
 
                     # self.fb_data[granularity]["hash_keys"][hash_key] = key
@@ -1158,11 +1143,18 @@ class FacebookAdsWorker(RequestsWorkerBase):
 
         return fb_report_map, report_row_count_total
 
-    def fb_get_report_mapping(self, account_id, ad_account, campaigns, report_segment, granularity):
+    def fb_get_report_mapping(
+        self,
+        account_id,
+        ad_account,
+        fb_campaigns,
+        report_segment,
+        granularity
+    ):
         """
         :param account_id:
         :param ad_account:
-        :param campaigns:
+        :param fb_campaigns:
         :param report_segment:
         :param granularity:
         :return:
@@ -1232,31 +1224,50 @@ class FacebookAdsWorker(RequestsWorkerBase):
             received_conversions = len(report_segment["unique_actions"])
 
         # By including the objective field to set campaign_type
-        sub_campaign_type = None
-        objective = report_segment.get("objective", None)
-        if objective is not None:
-            if objective in ["MOBILE_APP_INSTALLS", "APP_INSTALLS"]:
-                sub_campaign_type = "acquisition"
-            elif objective in ["MOBILE_APP_ENGAGEMENT", "LINK_CLICKS", "CONVERSIONS"]:
-                sub_campaign_type = "engagement"
-            else:
-                self.logger.debug("Unassigned 'sub_campaign_type'", extra={'objective': objective})
+        campaign_type = None
+        campaign_objective = report_segment.get("objective", None)
+        if campaign_objective is not None:
+            if campaign_objective in ["MOBILE_APP_INSTALLS", "APP_INSTALLS"]:
+                campaign_type = "acquisition"
+            elif campaign_objective in ["MOBILE_APP_ENGAGEMENT", "LINK_CLICKS", "CONVERSIONS"]:
+                campaign_type = "engagement"
 
         agency_id = None
         if self.agency_ids_map is not None and account_id in self.agency_ids_map:
             agency_id = self.agency_ids_map[account_id]
 
+        campaign_platform = ""
+        impression_device = ""
+        # publisher_platform = ""
+        # device_platform = ""
+        if fb_campaigns and "campaign_id" in report_segment:
+            fb_campaign_id = report_segment.get("campaign_id", None)
+            fb_campaign_ids = list(fb_campaigns.keys())
+
+            if fb_campaign_id and fb_campaign_id in fb_campaign_ids:
+                fb_campaign = fb_campaigns[fb_campaign_id]
+                if fb_campaign:
+                    campaign_platform = fb_campaign.get("campaign_platform", "")
+                    impression_device = fb_campaign.get("impression_device", "")
+                    # publisher_platform = fb_campaign.get("publisher_platform", "")
+                    # device_platform = fb_campaign.get("device_platform", "")
+
         return self.map_data_row(
             data_row=report_segment,
             config_job=self.config_job,
             data_supplemental={
-                "vendor_account_id": safe_str(account_id),
+                "account_id": safe_str(account_id),
                 # "site_ref_id": safe_str(report_campaign.get('site_ref_id', None)),
                 # "site_ref_type": safe_str(report_campaign.get('site_ref_type', None)),
                 # "platform_ref": safe_str(report_campaign.get('platform_ref', None)),
                 # "platform_type": safe_str(report_campaign.get('platform_type', None)),
                 "timezone": safe_str(ad_account_tz_name),
-                "sub_campaign_type": safe_str(sub_campaign_type),
+                "campaign_type": safe_str(campaign_type),
+                "campaign_platform": safe_str(campaign_platform),
+                "impression_device": safe_str(impression_device),
+                # "publisher_platform": safe_str(publisher_platform),
+                # "device_platform": safe_str(device_platform),
+                "campaign_objective": safe_str(campaign_objective),
                 "agency_id": safe_int(agency_id),
                 "received_impressions_complete": safe_int(received_impressions_complete),
                 "received_installs": safe_int(received_installs),
@@ -1345,16 +1356,16 @@ class FacebookAdsWorker(RequestsWorkerBase):
             }
         )
 
-        campaigns = {}
+        fb_campaigns = {}
         for report in fb_reports[main_report_id]:
             campaign_id = report.get("campaign_id", None)
             if not campaign_id:
                 continue
 
-            if campaign_id in campaigns:
+            if campaign_id in fb_campaigns:
                 continue
 
-            campaigns[campaign_id] = None
+            fb_campaigns[campaign_id] = {}
 
             if "actions" in report:
                 for action in report["actions"]:
@@ -1369,19 +1380,33 @@ class FacebookAdsWorker(RequestsWorkerBase):
                     website = connection_object.get('website')
                     native_app_store_ids = connection_object.get('native_app_store_ids')
 
+                    self.logger.debug(
+                        "connection_object",
+                        extra = {
+                            "object": dir(connection_object),
+                            "website": website if website else None,
+                            "native_app_store_ids_type": type(native_app_store_ids) if native_app_store_ids else None,
+                            "native_app_store_ids": list(native_app_store_ids) if native_app_store_ids else None
+                        }
+                    )
+
+                    fb_campaigns[campaign_id]["impression_device"] = action.get('impression_device', '').split('_')[0]
+                    # fb_campaigns[campaign_id]["publisher_platform"] = action.get('publisher_platform', '').split('_')[0]
+                    # fb_campaigns[campaign_id]["device_platform"] = action.get('device_platform', '').split('_')[0]
+
                     if website:
-                        pass
+                        fb_campaigns[campaign_id]["campaign_platform"] = "web"
 
                     elif native_app_store_ids:
                         for platform in native_app_store_ids:
                             if native_app_store_ids[platform]:
-                                campaigns[campaign_id] = {"site_ref": safe_str(native_app_store_ids[platform])}
+                                fb_campaigns[campaign_id] = {"site_ref": safe_str(native_app_store_ids[platform])}
                                 if platform == 1 or platform == 2 or platform == 3:
-                                    campaigns[campaign_id]["platform"] = "web"
+                                    fb_campaigns[campaign_id]["campaign_platform"] = "web"
                                 elif platform == 4 or platform == 5:
-                                    campaigns[campaign_id]["platform"] = "ios"
+                                    fb_campaigns[campaign_id]["campaign_platform"] = "ios"
                                 elif platform == 6:
-                                    campaigns[campaign_id]["platform"] = "android"
+                                    fb_campaigns[campaign_id]["campaign_platform"] = "android"
                                 break
 
         self.logger.info(
@@ -1389,11 +1414,11 @@ class FacebookAdsWorker(RequestsWorkerBase):
             extra={
                 'main_report_id': main_report_id,
                 'account_id': account_id,
-                'campaigns': list(campaigns.keys())
+                'fb_campaigns': fb_campaigns
             }
         )
 
-        return campaigns
+        return fb_campaigns
 
     def fb_distribute_daily_to_hourly(self, fb_report_map_daily, fb_report_map_hourly):
         """
@@ -1492,7 +1517,7 @@ class FacebookAdsWorker(RequestsWorkerBase):
 
         # Parse campaign name params, example: 'Default Name - App installs - my_campaign:US1 agency_id:10'
         # Start with campaign, if found it's valid for adset and ad, if not try with adset, etc...
-        my_campaign_name = FacebookAdsWorker.extract_my_campaign(data_row)
+        # my_campaign_name = FacebookAdsWorker.extract_my_campaign(data_row)
 
         # vendor_account_id = data_supplemental.get('vendor_account_id', None)
         # site_ref_id = data_supplemental.get('site_ref_id', 0)
@@ -1501,8 +1526,11 @@ class FacebookAdsWorker(RequestsWorkerBase):
         # platform_type = data_supplemental.get('platform_type', None)
         timezone = data_supplemental.get('timezone', None)
         cost_currency = data_supplemental.get('cost_currency', None)
-        sub_campaign_type = data_supplemental.get('sub_campaign_type', None)
-        agency_id = data_supplemental.get('agency_id', None)
+        campaign_type = data_supplemental.get('campaign_type', None)
+        campaign_objective = data_supplemental.get('campaign_objective', None)
+        campaign_platform = data_supplemental.get('campaign_platform', None)
+        impression_device = data_supplemental.get('impression_device', None)
+        # agency_id = data_supplemental.get('agency_id', None)
 
         received_installs_1d_view = data_supplemental.get('received_installs_1d_view', None)
         received_installs_1d_click = data_supplemental.get('received_installs_1d_click', None)
@@ -1530,15 +1558,17 @@ class FacebookAdsWorker(RequestsWorkerBase):
             "hour": safe_int(rhour),
             "timezone": safe_str(timezone),
             "granularity": granularity,
-            "sub_campaign_type": safe_str(sub_campaign_type),
-            "sub_campaign_ref": safe_str(data_row.get("campaign_id", None)),
-            "sub_campaign_name": safe_str(data_row.get("campaign_name", None)),
-            "sub_adgroup_ref": safe_str(data_row.get("adset_id", None)),
-            "sub_adgroup_name": safe_str(data_row.get("adset_name", None)),
-            "sub_ad_ref": safe_str(data_row.get("ad_id", None)),
-            "sub_ad_name": safe_str(data_row.get("ad_name", None)),
-            "my_campaign_name": safe_str(my_campaign_name),
-            "agency_id": safe_int(agency_id),
+            "campaign_type": safe_str(campaign_type),
+            "campaign_objective": safe_str(campaign_objective),
+            "campaign_platform": safe_str(campaign_platform),
+            "impression_device": safe_str(impression_device),
+            "campaign_id": safe_str(data_row.get("campaign_id", None)),
+            "campaign_name": safe_str(data_row.get("campaign_name", None)),
+            "adset_id": safe_str(data_row.get("adset_id", None)),
+            "adset_name": safe_str(data_row.get("adset_name", None)),
+            "ad_id": safe_str(data_row.get("ad_id", None)),
+            "ad_name": safe_str(data_row.get("ad_name", None)),
+            # "agency_id": safe_int(agency_id),
             "received_impressions_gross": received_impressions_gross,
             "received_impressions_unique": received_impressions_unique,
             "received_impressions_complete": safe_int(received_impressions_complete),

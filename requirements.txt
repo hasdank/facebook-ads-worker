@@ -2,5 +2,5 @@ algorithmia>=1.0.0,<2.0
 six
 logging-fortified==0.2.1
 requests_fortified>=0.2.4
-requests_worker>=0.1.2
+requests_worker>=0.2.0
 validators>=0.12.1
