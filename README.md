@@ -2,9 +2,10 @@
 Facebook Ads Worker using Facebook Marketing and Insights APIs
 
 ### ***Work In Progress***
-+ Documentation
-  + Configuration
-  + Results Parsing Tool
+
+#### TODO
++ Fix campaign platform determination
++ Documentation: Configuration and Results parsing tool
 
 Code is complete, but documentation is required.
 
