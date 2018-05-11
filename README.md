@@ -25,7 +25,37 @@ Which are also in the process of being hosted on pypi.org respectively:
 
 ## Configure Request
 
+```json
+{
+  "job": {
+    "start_date": "2018-05-06",
+    "end_date": "2018-05-06"
+  },
+  "credentials": {
+    "access_token": "[FACEBOOK ACCESS TOKEN]"
+  },
+  "upload": {
+    "s3_url": "",
+    "timeout": 1200
+  },
+  "logger": {
+    "format": "json",
+    "level": "debug"
+  }
+}
+```
+
 ## Run Worker
+
+```bash
+$ make local-run
+
+{"asctime": "2018-05-10 17:26:22 -0700", "levelname": "INFO", "name": "requests_worker", "version": "0.2.2", "message": "Download File: JSON", "upload_file_path": "/Users/jefft/github/jeff00seattle/facebook_ads_worker/tmp/facebook_ads.json.gz", "upload_file_size": "178.58 KB", "upload_row_count": 11532}
+{"asctime": "2018-05-10 17:26:22 -0700", "levelname": "INFO", "name": "requests_worker", "version": "0.2.2", "message": "Run: Completed", "exit_code": 0, "exit_desc": "Successfully completed", "exit_name": "Success", "run_time_msec": 186733}
+{"asctime": "2018-05-10 17:26:22 -0700", "levelname": "INFO", "name": "requests_worker", "version": "0.2.2", "message": "Facebook Ads Worker: Success", "exit_code": 0, "exit_desc": "Successfully completed", "exit_name": "Success", "run_time_msec": 186733}
+{"asctime": "2018-05-10 17:26:22 -0700", "levelname": "INFO", "name": "requests_worker.requests_worker_factory", "version": "0.2.2", "message": "Completed: Success", "exit_code": 0, "exit_desc": "Successfully completed", "exit_name": "Success", "run_time_msec": 186733}
+{"asctime": "2018-05-10 17:26:22 -0700", "levelname": "INFO", "name": "requests_worker.requests_worker_factory", "version": "0.2.2", "message": "Finished", "Exit Code": 0}
+```
 
 ## Results Parsing
 
