@@ -1,13 +1,14 @@
 # facebook-ads-worker
 Facebook Ads Worker using Facebook Marketing and Insights APIs
 
-***Work In Progress***
+### ***Work In Progress***
++ Documentation
+  + Configuration
+  + Results Parsing Tool
 
 Code is complete, but documentation is required.
 
 ## Introduction
-
-***Work In Progress***
 
 The following effort will be based on the work:
 + https://github.com/jeff00seattle/facebook-api-scripts
